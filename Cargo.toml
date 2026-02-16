@@ -1,0 +1,8 @@
+[workspace]
+resolver = "2"
+members = [
+    "sim_core",
+    "sim_components",
+    "sim_behaviors",
+    "runner",
+]

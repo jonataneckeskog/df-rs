@@ -1,0 +1,8 @@
+[package]
+name = "sim_behaviors"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+sim_components = { version = "0.1.0", path = "../sim_components" }
+sim_core = { version = "0.1.0", path = "../sim_core" }

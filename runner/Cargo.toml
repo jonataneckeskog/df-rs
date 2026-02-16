@@ -1,0 +1,9 @@
+[package]
+name = "runner"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+sim_behaviors = { version = "0.1.0", path = "../sim_behaviors" }
+sim_components = { version = "0.1.0", path = "../sim_components" }
+sim_core = { version = "0.1.0", path = "../sim_core" }
