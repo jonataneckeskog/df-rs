@@ -1,4 +1,4 @@
-use crate::world::{fluid::Fluid, material::MaterialType};
+use crate::world::{fluid::FluidType, material::MaterialType};
 use soa_derive::StructOfArray;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
@@ -24,11 +24,30 @@ impl TileStructure {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
+pub enum LayerType {
+    #[default]
+    None, // Air/Empty
+    Ground,       // Natural terrain
+    Construction, // Built walls/floors
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, StructOfArray, Default)]
 #[soa_derive(Debug, PartialEq)]
 pub struct Tile {
-    pub structure: TileStructure,
-    pub material: MaterialType,
-    pub fluid: Option<Fluid>,
+    // --- BOTTOM LAYER (The Earth) ---
+    pub ground_elevation: u8, // Height of the dirt
+    pub ground_material: MaterialType,
+
+    // Fluid "sits" on the ground layer
+    pub fluid_depth: u8, // 0-255. Adds to ground_elevation.
+    pub fluid_type: FluidType,
+
+    // --- TOP LAYER ---
+    // If bridge_type is None, this layer is empty (Air).
+    pub bridge_type: LayerType,
+    pub bridge_elevation: u8, // Height of the bridge walking surface.
+    pub bridge_material: MaterialType,
+
     pub heat: u8,
 }

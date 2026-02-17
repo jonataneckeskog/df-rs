@@ -1,12 +1,7 @@
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
 pub enum FluidType {
+    #[default]
     Water,
     Magma,
     Slime,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub struct Fluid {
-    pub kind: FluidType,
-    pub depth: u8,
 }
