@@ -6,3 +6,6 @@ members = [
     "sim_behaviors",
     "runner",
 ]
+
+[workspace.dependencies]
+bevy = { version = "0.18", default-features = false }

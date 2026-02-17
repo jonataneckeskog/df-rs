@@ -5,3 +5,4 @@ edition = "2024"
 
 [dependencies]
 sim_core = { version = "0.1.0", path = "../sim_core" }
+bevy = { workspace = true }
