@@ -1,14 +1,16 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
+use bevy::prelude::*;
+
+#[derive(Component, Debug)]
+pub struct Name(pub String);
+
+#[derive(Component, Debug)]
+pub struct Health {
+    pub current: f32,
+    pub max: f32,
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+#[derive(Component, Debug)]
+pub struct Greed(pub f32);
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
+#[derive(Component)]
+pub struct Actor;
