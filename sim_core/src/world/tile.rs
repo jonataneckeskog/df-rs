@@ -5,29 +5,30 @@ use soa_derive::StructOfArray;
 pub enum TileStructure {
     #[default]
     Empty, // Air
-    Floor(MaterialType), // Walkable ground
-    Wall(MaterialType),  // Solid block
-    Ramp(MaterialType),  // Slope for moving up Z-levels
+    Floor, // Walkable ground
+    Wall,  // Solid block
+    Ramp,  // Slope for moving up Z-levels
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, StructOfArray, Default)]
-#[soa_derive(Debug, PartialEq)]
-pub struct Tile {
-    pub structure: TileStructure,
-    pub fluid: Option<Fluid>,
-    pub heat: f32,
-}
-
-impl Tile {
+impl TileStructure {
     pub fn is_walkable(&self) -> bool {
-        match self.structure {
-            TileStructure::Floor(_) => true,
-            TileStructure::Ramp(_) => true,
+        match self {
+            TileStructure::Floor => true,
+            TileStructure::Ramp => true,
             _ => false,
         }
     }
 
     pub fn is_obstacle(&self) -> bool {
-        matches!(self.structure, TileStructure::Wall(_))
+        matches!(self, TileStructure::Wall)
     }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, StructOfArray, Default)]
+#[soa_derive(Debug, PartialEq)]
+pub struct Tile {
+    pub structure: TileStructure,
+    pub material: MaterialType,
+    pub fluid: Option<Fluid>,
+    pub heat: u8,
 }
