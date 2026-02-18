@@ -1,14 +1,30 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
+use bevy::prelude::*;
+use sim_components::{Greed, Health, Name};
+
+// Group systems into a Plugin for cleaner main.rs
+pub struct SimulationPlugin;
+
+impl Plugin for SimulationPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(Update, (survival_system, greed_logging_system));
+    }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+// System: Apply logic to specific components
+fn survival_system(mut query: Query<(&Name, &mut Health)>) {
+    for (name, mut health) in query.iter_mut() {
+        health.current -= 0.1; // Decay health over time
+        if health.current <= 0.0 {
+            println!("{} has perished!", name.0);
+        }
+    }
+}
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+// System: Filter only greedy entities
+fn greed_logging_system(query: Query<(&Name, &Greed)>) {
+    for (name, greed) in query.iter() {
+        if greed.0 > 0.8 {
+            println!("{} is scheming...", name.0);
+        }
     }
 }
