@@ -4,10 +4,11 @@ use soa_derive::StructOfArray;
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
 pub enum TileStructure {
     #[default]
-    Empty, // Air
-    Floor, // Walkable ground
-    Wall,  // Solid block
-    Ramp,  // Slope for moving up Z-levels
+    Empty, // Nothing built here; use ground_elevation
+    Floor,  // A paved surface at ground_elevation
+    Wall,   // A solid block that fills the space above ground_elevation
+    Ramp,   // A transition between this XY and a neighbor's elevation
+    Stairs, // Vertical movement within this single XY
 }
 
 impl TileStructure {
@@ -35,19 +36,24 @@ pub enum LayerType {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, StructOfArray, Default)]
 #[soa_derive(Debug, PartialEq)]
 pub struct Tile {
-    // --- BOTTOM LAYER (The Earth) ---
-    pub ground_elevation: u8, // Height of the dirt
+    // --- THE NATURAL FOUNDATION ---
+    pub ground_elevation: u8, // The base height of the dirt/rock
     pub ground_material: MaterialType,
 
-    // Fluid "sits" on the ground layer
-    pub fluid_depth: u8, // 0-255. Adds to ground_elevation.
+    // --- THE "OCCUPANT" (For example a tower construction) ---
+    pub structure: TileStructure, // Floor, Wall, Ramp, Stairs, or Empty
+    pub structure_material: MaterialType,
+
+    // --- THE FLOODED LAYER ---
     pub fluid_type: FluidType,
 
-    // --- TOP LAYER ---
-    // If bridge_type is None, this layer is empty (Air).
+    // --- THE OVERLAY (Bridges / Scaffolding) ---
+    // In 2.5D, this allows someone to walk *over* a hole or a lower floor.
     pub bridge_type: LayerType,
-    pub bridge_elevation: u8, // Height of the bridge walking surface.
+    pub bridge_elevation: u8,
     pub bridge_material: MaterialType,
 
+    // --- DYNAMIC DATA ---
+    pub fluid_depth: u8,
     pub heat: u8,
 }
